@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface CategoryService {
     List<CategoryDTO> getAllCategories();
-    CategoryDTO findCategoryByName(String name);
+    CategoryDTO getCategoryByName(String name);
 }
