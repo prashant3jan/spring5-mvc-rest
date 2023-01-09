@@ -17,7 +17,7 @@ public class CustomerMapperTest {
         customer.setId(1l);
         customer.setFirstname("Joe");
         customer.setLastname("Newman");
-        customer.setCustomerUrl("/shop/customers/1");
+        customer.setCustomerUrl("/shop/v1/customers/1");
 
         //when
         CustomerDTO customerDTO = customerMapper.customerToCustomerDTO(customer);
@@ -26,6 +26,6 @@ public class CustomerMapperTest {
         assertEquals(Long.valueOf(1), customerDTO.getId());
         assertEquals("Joe", customerDTO.getFirstname());
         assertEquals("Newman", customerDTO.getLastname());
-        assertEquals("/shop/customers/1", customerDTO.getCustomerUrl());
+        assertEquals("/shop/v1/customers/1", customerDTO.getCustomerUrl());
     }
 }

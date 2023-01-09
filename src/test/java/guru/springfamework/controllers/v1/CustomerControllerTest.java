@@ -13,12 +13,11 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -51,7 +50,7 @@ public class CustomerControllerTest {
         customer2.setId(2L);
         customer2.setFirstname("Michael");
         customer2.setLastname("Lachappele");
-        customer2.setCustomerUrl("/shop/shop/v1/customers/2");
+        customer2.setCustomerUrl("/shop/v1/customers/2");
 
 
         List<CustomerDTO> customers = Arrays.asList(customer1, customer2);
@@ -72,9 +71,9 @@ public class CustomerControllerTest {
         customer1.setLastname("Newman");
         customer1.setCustomerUrl("/shop/v1/customers/1");
 
-        when(customerService.getCustomerByFirstname(anyString())).thenReturn(customer1);
+        when(customerService.getCustomerById(anyLong())).thenReturn(customer1);
         {
-            mockMvc.perform(get("/shop/v1/customers/Joe")
+            mockMvc.perform(get("/shop/v1/customers/1")
                             .contentType(MediaType.APPLICATION_JSON))
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$.firstname", equalTo("Joe")));
