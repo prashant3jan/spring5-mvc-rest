@@ -64,7 +64,7 @@ public class CustomerControllerTest {
     }
 
     @Test
-    public void getCustomerByFirstname() throws Exception {
+    public void getCustomerById() throws Exception {
         CustomerDTO customer1 = new CustomerDTO();
         customer1.setId(1L);
         customer1.setFirstname("Joe");
@@ -72,11 +72,10 @@ public class CustomerControllerTest {
         customer1.setCustomerUrl("/shop/v1/customers/1");
 
         when(customerService.getCustomerById(anyLong())).thenReturn(customer1);
-        {
-            mockMvc.perform(get("/shop/v1/customers/1")
-                            .contentType(MediaType.APPLICATION_JSON))
-                    .andExpect(status().isOk())
-                    .andExpect(jsonPath("$.firstname", equalTo("Joe")));
-        }
+        //when
+        mockMvc.perform(get("/shop/v1/customers/1")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.firstname", equalTo("Joe")));
     }
 }

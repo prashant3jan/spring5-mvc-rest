@@ -2,7 +2,6 @@ package guru.springfamework.api.v1.mapper;
 
 import guru.springfamework.api.v1.model.CustomerDTO;
 import guru.springfamework.domain.Customer;
-import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
