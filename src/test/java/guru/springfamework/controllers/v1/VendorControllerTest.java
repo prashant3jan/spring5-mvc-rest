@@ -97,26 +97,16 @@ public class VendorControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name", equalTo(vendorDTO_1.getName())));
     }
-
     @Test
     public void patchVendor() throws Exception {
         //given
-
-
-        VendorDTO returnDTO = new VendorDTO();
-        returnDTO.setId(1L);
-        returnDTO.setName(vendorDTO_1.getName());
-
-        returnDTO.setVendorUrl(vendorDTO_1.getVendorUrl());
-
-        given(vendorService.patchVendor(anyLong(), any(VendorDTO.class))).willReturn(returnDTO);
+        given(vendorService.patchVendor(anyLong(), any(VendorDTO.class))).willReturn(vendorDTO_1);
 
         mockMvc.perform(patch(VendorController.BASE_URL + "/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(vendorDTO_1)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.vendor_url", equalTo(VendorController.BASE_URL+"/1")));
-
     }
 
     @Test
