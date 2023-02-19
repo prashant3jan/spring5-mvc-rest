@@ -30,7 +30,7 @@ public class CustomerServiceImplIT {
 
     @Autowired
     CategoryRepository categoryRepository;
-
+    @Autowired
     VendorRepository vendorRepository;
 
     CustomerService customerService;

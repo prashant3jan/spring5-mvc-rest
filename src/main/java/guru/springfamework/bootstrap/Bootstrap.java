@@ -15,7 +15,7 @@ public class Bootstrap implements CommandLineRunner {
 
     private CustomerRepository customerRepository;
 
-    private final VendorRepository vendorRepository;
+    private VendorRepository vendorRepository;
 
     public Bootstrap(CategoryRepository categoryRepository, CustomerRepository customerRepository, VendorRepository vendorRepository) {
         this.categoryRepository = categoryRepository;
