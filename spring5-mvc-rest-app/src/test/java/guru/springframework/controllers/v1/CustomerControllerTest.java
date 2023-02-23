@@ -1,7 +1,7 @@
 package guru.springframework.controllers.v1;
 
-import guru.springframework.model.CustomerDTO;
 import guru.springframework.controllers.RestResponseEntityExceptionHandler;
+import guru.springframework.model.CustomerDTO;
 import guru.springframework.services.CustomerService;
 import org.junit.Before;
 import org.junit.Test;

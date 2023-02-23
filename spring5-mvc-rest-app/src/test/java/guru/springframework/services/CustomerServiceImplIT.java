@@ -1,14 +1,14 @@
 package guru.springframework.services;
 
 import guru.springframework.api.v1.mapper.CustomerMapper;
-import guru.springframework.model.CustomerDTO;
+
 import guru.springframework.bootstrap.Bootstrap;
 import guru.springframework.domain.Customer;
+import guru.springframework.model.CustomerDTO;
 import guru.springframework.repositories.CategoryRepository;
 import guru.springframework.repositories.CustomerRepository;
 import guru.springframework.repositories.VendorRepository;
-import guru.springframework.services.CustomerService;
-import guru.springframework.services.CustomerServiceImpl;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
