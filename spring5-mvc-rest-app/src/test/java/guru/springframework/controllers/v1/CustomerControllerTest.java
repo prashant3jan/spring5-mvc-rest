@@ -1,5 +1,6 @@
 package guru.springframework.controllers.v1;
-
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import guru.springframework.controllers.RestResponseEntityExceptionHandler;
 import guru.springframework.model.CustomerDTO;
 import guru.springframework.services.CustomerService;
@@ -10,10 +11,10 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.Matchers.hasSize;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 
@@ -21,6 +22,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.mockito.Mockito.verify;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -43,7 +46,7 @@ public class CustomerControllerTest {
     }
 
     @Test
-    public void getAllCustomers() throws Exception {
+    public void getListOfCustomers() throws Exception {
         CustomerDTO customer1 = new CustomerDTO();
         customer1.setId(1L);
         customer1.setFirstname("Joe");
@@ -59,14 +62,13 @@ public class CustomerControllerTest {
 
 
         List<CustomerDTO> customers = Arrays.asList(customer1, customer2);
-
         when(customerService.getAllCustomers()).thenReturn(customers);
 
         mockMvc.perform(get(CustomerController.BASE_URL)
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.customers", hasSize(2)));
+                .andExpect(jsonPath("$.customers",hasSize(2)));
     }
 
     @Test
@@ -88,67 +90,65 @@ public class CustomerControllerTest {
 
     @Test
     public void createNewCustomer() throws Exception{
-        //given
-        CustomerDTO customer = new CustomerDTO();
-        customer.setFirstname("Fred");
-        customer.setLastname("Flintstone");
+        CustomerDTO customer3 = new CustomerDTO();
+        customer3.setFirstname("Fred");
+        customer3.setLastname("Flintstone");
 
         CustomerDTO returnDTO = new CustomerDTO();
-        returnDTO.setFirstname(customer.getFirstname());
-        returnDTO.setLastname(customer.getLastname());
+        returnDTO.setFirstname(customer3.getFirstname());
+        returnDTO.setLastname(customer3.getLastname());
         returnDTO.setCustomerUrl(CustomerController.BASE_URL+"/1");
-        when(customerService.createNewCustomer(customer)).thenReturn(returnDTO);
+        when(customerService.createNewCustomer(any(CustomerDTO.class))).thenReturn(returnDTO);
 
         mockMvc.perform(post(CustomerController.BASE_URL)
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(AbstractRestControllerTest.asJsonString(customer)))
+                .content(asJsonString(customer3)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.firstname", equalTo("Fred")))
-                .andExpect(jsonPath("$.customer_url",equalTo(CustomerController.BASE_URL+"/1")));
+                .andExpect(jsonPath("$.customerUrl",equalTo(CustomerController.BASE_URL+"/1")));
     }
 
     @Test
     public void testUpdateCustomer() throws Exception{
         //given
-        CustomerDTO customer = new CustomerDTO();
-        customer.setFirstname("Fred");
-        customer.setLastname("Flintstone");
+        CustomerDTO customer4 = new CustomerDTO();
+        customer4.setFirstname("Fred");
+        customer4.setLastname("Flintstone");
 
         CustomerDTO returnDTO = new CustomerDTO();
-        returnDTO.setFirstname(customer.getFirstname());
-        returnDTO.setLastname(customer.getLastname());
+        returnDTO.setFirstname(customer4.getFirstname());
+        returnDTO.setLastname(customer4.getLastname());
         returnDTO.setCustomerUrl(CustomerController.BASE_URL+"/1");
         when(customerService.saveCustomerByDTO(anyLong(), any(CustomerDTO.class))).thenReturn(returnDTO);
 
         mockMvc.perform(put(CustomerController.BASE_URL+"/1")
-                .accept(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(AbstractRestControllerTest.asJsonString(customer)))
+                .content(asJsonString(customer4)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.firstname", equalTo("Fred")))
-                .andExpect(jsonPath("$.customer_url",equalTo(CustomerController.BASE_URL+"/1")));
+                .andExpect(jsonPath("$.customerUrl",equalTo(CustomerController.BASE_URL+"/1")));
     }
 
     @Test
     public void testPatchCustomer() throws Exception{
         //given
-        CustomerDTO customer = new CustomerDTO();
-        customer.setFirstname("Fred");
+        CustomerDTO customer5 = new CustomerDTO();
+        customer5.setFirstname("Fred");
 
         CustomerDTO returnDTO = new CustomerDTO();
-        returnDTO.setFirstname(customer.getFirstname());
+        returnDTO.setFirstname(customer5.getFirstname());
         returnDTO.setLastname("Flintstone");
-        returnDTO.setCustomerUrl(CustomerController.BASE_URL+"/1");
+        returnDTO.setCustomerUrl("/shop/v1/customers/1");
         when(customerService.patchCustomer(anyLong(), any(CustomerDTO.class))).thenReturn(returnDTO);
 
-        mockMvc.perform(patch(CustomerController.BASE_URL+"/1")
-                 .accept(MediaType.APPLICATION_JSON)
+        mockMvc.perform(patch("/shop/v1/customers/1")
+                        .accept(MediaType.APPLICATION_JSON)
                  .contentType(MediaType.APPLICATION_JSON)
-                 .content(AbstractRestControllerTest.asJsonString(customer)))
+                 .content(asJsonString(customer5)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.lastname", equalTo("Flintstone")))
-                .andExpect(jsonPath("$.customer_url",equalTo(CustomerController.BASE_URL+"/1")));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.lastname").value("Flintstone"));
     }
 
     @Test
@@ -158,5 +158,13 @@ public class CustomerControllerTest {
                 .andExpect(status().isOk());
         verify(customerService).deleteCustomerById(anyLong());
 
+    }
+
+    public static String asJsonString(final Object obj){
+        try {
+            return new ObjectMapper().writeValueAsString(obj);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

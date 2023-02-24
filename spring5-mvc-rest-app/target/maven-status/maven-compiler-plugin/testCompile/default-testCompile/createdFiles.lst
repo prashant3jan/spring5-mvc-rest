@@ -1,0 +1,12 @@
+guru\springframework\spring5mvcrest\Spring5MvcRestApplicationTests.class
+guru\springframework\controllers\v1\CategoryControllerTest.class
+guru\springframework\controllers\v1\AbstractRestControllerTest.class
+guru\springframework\controllers\v1\CustomerControllerTest.class
+guru\springframework\services\VendorServiceImplTest.class
+guru\springframework\api\v1\mapper\CategoryMapperTest.class
+guru\springframework\api\v1\mapper\VendorMapperTest.class
+guru\springframework\controllers\v1\VendorControllerTest.class
+guru\springframework\services\CustomerServiceImplIT.class
+guru\springframework\services\CategoryServiceTest.class
+guru\springframework\api\v1\mapper\CustomerMapperTest.class
+guru\springframework\services\CustomerServiceTest.class

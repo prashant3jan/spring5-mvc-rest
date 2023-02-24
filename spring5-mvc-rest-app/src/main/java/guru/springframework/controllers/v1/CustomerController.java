@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 @Api(description="This is my Customer Controller")
-@Controller
+@RestController
 @RequestMapping(CustomerController.BASE_URL)
 public class CustomerController {
     public static final String BASE_URL = "/shop/v1/customers";
@@ -26,12 +26,18 @@ public class CustomerController {
     }
     @ApiOperation(value="This will get a list of customers.", notes="These are some notes about the API")
     @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public CustomerDTO getCustomerById(@PathVariable Long id){
-        return customerService.getCustomerById(id);
+        CustomerDTO customerDTO = new CustomerDTO();
+        customerDTO = customerService.getCustomerById(id);
+        return customerDTO;
     }
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public CustomerDTO createNewCustomer(@RequestBody CustomerDTO customerDTO){
-        return customerService.createNewCustomer(customerDTO);
+        CustomerDTO customerDTO1 = new CustomerDTO();
+        customerDTO1 = customerService.createNewCustomer(customerDTO);
+        return customerDTO1;
     }
     @PutMapping("/{id}")
     public CustomerDTO updateCustomer(@PathVariable Long id, @RequestBody CustomerDTO customerDTO){

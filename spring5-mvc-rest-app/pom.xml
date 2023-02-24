@@ -4,6 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>spring5-mvc-rest-app</artifactId>
     <packaging>jar</packaging>
+    <version>0.0.1-SNAPSHOT</version>
     <name>spring5-mvc-rest-app</name>
     <description>spring5-mvc-rest-app</description>
     <parent>
@@ -16,7 +17,7 @@
         <dependency>
             <groupId>guru.springframework</groupId>
             <artifactId>rest-model</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
